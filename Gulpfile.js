@@ -9,7 +9,7 @@ function clean() {
 	return del('static/**')
 }
 
-function maniwani_css() {
+function nullchan_css() {
 	return src('./scss/themes/*/theme-*.scss').pipe(
 		sass({outputStyle: 'compressed',
 			  includePaths: ['./node_modules/bootstrap/scss', './scss/base']}).on('error', sass.logError)).pipe(
@@ -57,13 +57,13 @@ function watch() {
 		proxy: '127.0.0.1:5000',
 		port: 5000
   });
-	gulp.watch('./scss/**/*.scss', maniwani_css ).on('change', browserSync.reload);
+	gulp.watch('./scss/**/*.scss', nullchan_css ).on('change', browserSync.reload);
 	gulp.watch("./templates/*.html").on("change", browserSync.reload);
 }
 
 exports.watch = watch
 exports.clean = clean
-exports.css = parallel(maniwani_css, fontawesome_css)
+exports.css = parallel(nullchan_css, fontawesome_css)
 exports.fonts = fontawesome_webfonts
 exports.js = parallel(popper, jquery, bootstrap_js, imagesloaded, masonry)
 exports.build = series(clean, parallel(exports.css, exports.js, exports.fonts))

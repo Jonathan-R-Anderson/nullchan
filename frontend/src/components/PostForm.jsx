@@ -40,10 +40,8 @@ function PostFormBase(props) {
               the rules to see what kind of files can be uploaded.</small>
           </div>
           {props.embed_submit && <input type="submit" className="m-1 btn btn-primary" value="Post"/>}
-          {props.captcha_method === 'CAPTCHOULI' &&
-           <Captchouli captchouli_id={props.captcha_id} character={props.character} images={props.images}/>}
-		</form>
-	);
+                </form>
+        );
 }
 
 function TagEntry(props) {
@@ -65,27 +63,6 @@ function SlipEntry(props) {
             has special permissions enabled for this board (admin, mod, etc.).
           </small>
         </div>
-    );
-}
-
-function Captchouli(props) {
-    return (
-        <React.Fragment>
-        <input type="hidden" name="captchouli-id" value={props.captchouli_id}></input>
-          <details>
-            <summary className="text-muted">Select all images of <b>{props.character}</b></summary>
-            <div className="captchouli-container">
-              {Object.entries(props.images).map(([name, src]) => {
-                  return <div className="captchouli-input">
-                           <label>
-                             <input type="checkbox" className="captchouli-checkbox" name={name} autoComplete="off"/>
-                             <img className="captchouli-img" draggable="false" src={src}/>
-                           </label>
-                         </div>;
-              })}
-            </div>
-          </details>
-        </React.Fragment>
     );
 }
 

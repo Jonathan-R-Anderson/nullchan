@@ -1,18 +1,10 @@
 version: '3'
 services:
-    maniwani:
+    nullchan:
         build: .
-    maniwani-frontend:
+    nullchan-frontend:
         build: ./frontend
-        hostname: maniwani-frontend
-    captchouli:
-        build: ./build-helpers/captchouli
-        hostname: captchouli
-        restart: always
-        environment:
-            - CAPTCHOULI_FLAGS=-e -t izayoi_sakuya,yakumo_yukari,hong_meiling
-        volumes:
-            - compose-captchouli:/home/captchouli/.captchouli
+        hostname: nullchan-frontend
     minio:
         image: "minio/minio"
         hostname: minio
@@ -31,7 +23,7 @@ services:
         ports:
             - "5000:5000"
         depends_on:
-            - maniwani
+            - nullchan
         volumes:
             - ./deploy-configs/nginx.conf:/etc/nginx/nginx.conf
     postgres:
@@ -56,6 +48,5 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock
             - /etc/resolv.conf:/etc/resolv.conf
 volumes:
-  compose-captchouli:
   compose-minio:
   compose-postgres:

@@ -1,7 +1,7 @@
 {
-  "name": "maniwani-frontend",
+  "name": "nullchan-frontend",
   "version": "1.0.0",
-  "description": "Express/React-based frontend for Maniwani",
+  "description": "Express/React-based frontend for Nullchan",
   "main": "main.js",
   "scripts": {
     "gulp": "gulp",

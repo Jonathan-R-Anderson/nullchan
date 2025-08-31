@@ -2,7 +2,7 @@ import os
 import subprocess
 import time
 import unittest
-os.environ["MANIWANI_CFG"] = "test/media-test-config.cfg"
+os.environ["NULLCHAN_CFG"] = "test/media-test-config.cfg"
 from shared import app, db
 from model.Media import storage
 

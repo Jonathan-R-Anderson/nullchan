@@ -7,9 +7,9 @@ RUN npm install
 COPY src/ /frontend-src/src
 COPY Gulpfile.js /frontend-src
 RUN npm run gulp
-RUN mv /frontend-src/build /maniwani-frontend
-RUN cp -r /frontend-src/node_modules /maniwani-frontend/
-WORKDIR /maniwani-frontend
-COPY entrypoint.sh /maniwani-frontend
+RUN mv /frontend-src/build /nullchan-frontend
+RUN cp -r /frontend-src/node_modules /nullchan-frontend/
+WORKDIR /nullchan-frontend
+COPY entrypoint.sh /nullchan-frontend
 EXPOSE 3000
 ENTRYPOINT ["sh", "./entrypoint.sh"]

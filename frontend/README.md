@@ -1,4 +1,4 @@
-Express/React frontend for Maniwani
+Express/React frontend for Nullchan
 ===================================
 
 
@@ -7,7 +7,7 @@ Building
 
 The frontend builds with Docker, so the following should work:
 
-	docker build -t maniwani-frontend .
+	docker build -t nullchan-frontend .
 	
 
 Running
@@ -15,8 +15,8 @@ Running
 
 The frontend currently takes no options, so running it should be as simple as:
 
-	docker run -p 3000:3000 maniwani-frontend
+	docker run -p 3000:3000 nullchan-frontend
 	
-Point to the hostname and port combo of the frontend in `maniwani.cfg`, and
+Point to the hostname and port combo of the frontend in `nullchan.cfg`, and
 the backend should communicate with it correctly. See the `docker-compose.yml`
-and `maniwani.cfg` included with this repository for an example.
+and `nullchan.cfg` included with this repository for an example.

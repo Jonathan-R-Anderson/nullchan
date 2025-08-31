@@ -4,8 +4,6 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from werkzeug.http import parse_etags
 
 import cache
-import captchouli
-import cooldown
 from model.Media import upload_size, storage
 from model.Board import Board
 from model.NewPost import NewPost
@@ -18,7 +16,7 @@ from model.Slip import get_slip, get_slip_bitmask
 from model.SubmissionError import SubmissionError
 from model.Thread import Thread
 from model.ThreadPosts import ThreadPosts
-from post import InvalidMimeError, CaptchaError
+from post import InvalidMimeError
 import renderer
 from shared import db, app
 from thread import invalidate_board_cache
@@ -28,19 +26,9 @@ threads_blueprint = Blueprint('threads', __name__, template_folder='template')
 threads_blueprint.add_app_template_global(url_for_post)
 
 
-@app.context_processor
-def get_captchouli():
-    def _get_captchouli():
-        return captchouli.request_captcha()
-    return dict(get_captchouli=_get_captchouli)
-
-
 @threads_blueprint.route("/new/<int:board_id>")
 def new(board_id):
-    extra_data = {}
-    if app.config.get("CAPTCHA_METHOD") == "CAPTCHOULI":
-        extra_data = renderer.captchouli_to_json(captchouli.request_captcha())
-    return renderer.render_new_thread_form(board_id, extra_data)
+    return renderer.render_new_thread_form(board_id)
 
 
 @threads_blueprint.route("/new", methods=["POST"])
@@ -53,9 +41,6 @@ def submit():
         return redirect(url_for("threads.new", board_id=e.args[1]))
     except InvalidMimeError as e:
         flash("Can't post attachment with MIME type \"%s\" on this board!" % e.args[0])
-        return redirect(url_for("threads.new", board_id=e.args[1]))
-    except CaptchaError as e:
-        flash("CAPTCHA error: %s" % e.args[0])
         return redirect(url_for("threads.new", board_id=e.args[1]))
 
 
@@ -105,10 +90,7 @@ def view(thread_id):
             post["media_url"] = storage.get_media_url(post["media"], post["media_ext"])
             post["thumb_url"] = storage.get_thumb_url(post["media"])
     thread_data["posts"] = posts
-    extra_data = {}
-    if app.config.get("CAPTCHA_METHOD") == "CAPTCHOULI":
-        extra_data = renderer.captchouli_to_json(captchouli.request_captcha())
-    template = renderer.render_thread(thread_data, thread_id, extra_data)
+    template = renderer.render_thread(thread_data, thread_id)
     uncached_response = make_response(template)
     uncached_response.set_etag(etag_value, weak=True)
     uncached_response.headers["Cache-Control"] = "public,must-revalidate"
@@ -158,10 +140,7 @@ def move_submit(thread_id):
 
 @threads_blueprint.route("/<int:thread_id>/new")
 def new_post(thread_id):
-    extra_data = {}
-    if app.config.get("CAPTCHA_METHOD") == "CAPTCHOULI":
-        extra_data = renderer.captchouli_to_json(captchouli.request_captcha())
-    return renderer.render_new_post_form(thread_id, extra_data)
+    return renderer.render_new_post_form(thread_id)
 
 
 @threads_blueprint.route("/<int:thread_id>/new", methods=["POST"])
@@ -170,9 +149,6 @@ def post_submit(thread_id):
         NewPost().post(thread_id)
     except InvalidMimeError as e:
         flash("Can't post attachment with MIME type \"%s\" on this board!" % e.args[0])
-        return redirect(url_for("threads.new_post", thread_id=thread_id))
-    except CaptchaError as e:
-        flash("CAPTCHA error: %s" % e.args[0])
         return redirect(url_for("threads.new_post", thread_id=thread_id))
     return redirect(url_for("threads.view", thread_id=thread_id) + "#thread-bottom")
 

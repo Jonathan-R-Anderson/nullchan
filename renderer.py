@@ -22,14 +22,6 @@ GALLERY_TEMPLATE = "react-gallery.html"
 GALLERY_RENDER_URL = "/render/gallery"
 
 
-def captchouli_to_json(captchouli):
-    return {"captcha_method": "CAPTCHOULI",
-            "captchouli": {
-                "captcha_id": captchouli.captcha_id,
-                "character": captchouli.character,
-                "images": captchouli.images}}
-
-
 def render_react_template(template, renderer_path, data):
     renderer_url = app.config["RENDERER_HOST"] + renderer_path
     payload = {"template": template, "data": data}

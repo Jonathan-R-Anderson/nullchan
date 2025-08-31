@@ -7,15 +7,12 @@
 	{% endif %}
 {% endblock %}
 {% block head %}
-	{% if config["CAPTCHA_METHOD"] == "RECAPTCHA" %}
-		<script src='https://www.google.com/recaptcha/api.js?render={{ config["RECAPTCHA_SITE_KEY"] }}'></script>
-	{% endif %}
-	<style>
-	 .media-container {
-		 position: relative;
-		 text-align: center;
-	 }
-	</style>
+        <style>
+         .media-container {
+                 position: relative;
+                 text-align: center;
+         }
+        </style>
 {% endblock %}
 {% block navbar %}
 	<noscript>

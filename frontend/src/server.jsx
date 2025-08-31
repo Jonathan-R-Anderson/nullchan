@@ -9,38 +9,23 @@ import NewThreadModal from './components/NewThreadModal';
 import Post from './components/Post';
 import Thread from './components/Thread';
 import ThreadGallery from './components/ThreadGallery';
-import { reducer, setBoard, setStyles, setCaptcha, DEFAULT_STATE } from './state';
+import { reducer, setStyles, DEFAULT_STATE } from './state';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 
 const app = express();
-// need to increase the limit for the sake of potential embedded captchas
 app.use(express.json({limit: '3mb', extended: true}));
 const port = 3000;
 
-
-function extractCaptcha(reqBody) {
-    if(reqBody.data.captcha_method == 'CAPTCHOULI') {
-        return {
-            captcha_method: reqBody.data.captcha_method,
-            captcha_id: reqBody.data.captchouli.captcha_id,
-            character: reqBody.data.captchouli.character,
-            images: reqBody.data.captchouli.images,
-        };
-    }
-    return {};
-}
 
 app.get('/health-check', (req, res) => res.send('OK'));
 function serveCatalog(req, res) {
     const catalog = req.body.data.catalog;
     const boardId = req.body.data.board_id;
-    const captchaProps = extractCaptcha(req.body);
     const initialState = Object.assign({}, DEFAULT_STATE, {threads: catalog.threads});
     const store = createStore(reducer, initialState);
     store.dispatch(setStyles(catalog.tag_styles));
-    store.dispatch(setCaptcha(extractCaptcha(req.body)));
     const template = req.body.template;
     const templateWithData = template.replace('STORE_DATA',
                                                 JSON.stringify(store.getState())).
@@ -62,10 +47,8 @@ app.post('/render/board-index', function (req, res) {
 function serveThread(req, res) {
     const thread = req.body.data.thread;
     const threadId = req.body.data.thread_id;
-    const captchaProps = extractCaptcha(req.body);
     const initialState = Object.assign({}, DEFAULT_STATE, {posts: thread.posts});
     const store = createStore(reducer, initialState);
-    store.dispatch(setCaptcha(extractCaptcha(req.body)));
     const template = req.body.template;
     const templateWithData = template.replace('STORE_DATA',
                                                 JSON.stringify(store.getState())).
@@ -98,17 +81,15 @@ app.post('/render/firehose', function (req, res) {
 
 app.post('/render/new-thread', function (req, res) {
     const boardId = req.body.data.board_id;
-    const captchaProps = extractCaptcha(req.body);
     const template = req.body.template;
-    const serverDOM = ReactDOMServer.renderToString(<NewThreadForm action="/threads/new" board_id={boardId} embed_submit={true} {...captchaProps}/>);
+    const serverDOM = ReactDOMServer.renderToString(<NewThreadForm action="/threads/new" board_id={boardId} embed_submit={true}/>);
     return res.send(template.replace('TEMPLATE_CONTENT', serverDOM));
 });
 
 app.post('/render/new-post', function (req, res) {
     const threadId = req.body.data.thread_id;
-    const captchaProps = extractCaptcha(req.body);
     const template = req.body.template;
-    const serverDOM = ReactDOMServer.renderToString(<NewPostForm action={"/threads/" + threadId + "/new"} thread_id={threadId} embed_submit={true} {...captchaProps}/>);
+    const serverDOM = ReactDOMServer.renderToString(<NewPostForm action={"/threads/" + threadId + "/new"} thread_id={threadId} embed_submit={true}/>);
     return res.send(template.replace('TEMPLATE_CONTENT', serverDOM));
 });
 
