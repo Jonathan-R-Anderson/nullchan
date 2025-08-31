@@ -8,11 +8,8 @@ from typing import Tuple, Set, List
 
 from flask import request
 from flask_restful import reqparse, inputs
-import requests
 
 from cache import Cache
-import captchouli
-from cooldown import on_captcha_cooldown, refresh_captcha_cooldown
 import keystore
 from model.Board import Board
 from model.Media import storage
@@ -29,54 +26,12 @@ class InvalidMimeError(Exception):
     "Error to be thrown when the mimetype is invalid for an attachment."
 
 
-class CaptchaError(Exception):
-    "Error to be thrown when captcha is invalid."
-
-
-GOOGLE_RECAPTCHA_PATH = "https://www.google.com/recaptcha/api/siteverify"
-
-
 def get_ip_address() -> str:
     "Returns the current IP address of the user."
 
     if "X-Forwarded-For" in request.headers:
         return request.headers.getlist("X-Forwarded-For")[0].split()[-1]
     return request.environ["REMOTE_ADDR"]
-
-
-def validate_captcha(board_id: int, args: dict) -> None:
-    "Validates the authenticity of the current user with a captcha."
-
-    if on_captcha_cooldown():
-        return
-
-    captcha_method = app.config.get("CAPTCHA_METHOD")
-    if captcha_method == "RECAPTCHA":
-        google_response = requests.post(
-            GOOGLE_RECAPTCHA_PATH,
-            data={
-                "secret": app.config.get("RECAPTCHA_SECRET_KEY"),
-                "response": args["recaptcha-token"]
-            }
-        ).json()
-
-        if not google_response["success"]:
-            raise CaptchaError("reCAPTCHA response failed", board_id)
-
-        if google_response["score"] < app.config["RECAPTCHA_THRESHOLD"]:
-            raise CaptchaError("reCAPTCHA score below threshold", board_id)
-    elif captcha_method == "CAPTCHOULI":
-        captchouli_args = {
-            k: v for k, v in args.items()
-            if k.startswith("captchouli")
-        }
-        if not captchouli.valid_solution(captchouli_args):
-            raise CaptchaError("Incorrect CAPTCHA solution", board_id)
-    else:
-        # TODO is this supposed to be nothing at all? raise exception?
-        pass
-
-    refresh_captcha_cooldown()
 
 
 def get_or_update_poster(thread_id: int, ip: str) -> Tuple[Poster, bool]:
@@ -202,7 +157,6 @@ def create_post(thread: Thread, args: dict) -> Post:
     "Creates a new post from the given data."
 
     board_id = thread.board
-    validate_captcha(board_id, args)
 
     ip = get_ip_address()
     poster, flooding = get_or_update_poster(thread.id, ip)

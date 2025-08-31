@@ -1,4 +1,4 @@
 #!/bin/sh
 
-cd /maniwani-frontend
+cd /nullchan-frontend
 node server.js

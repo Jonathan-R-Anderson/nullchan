@@ -1,2 +1,2 @@
 docker_builder:
-    build_script: docker build -t maniwani-dev --target dev .
+    build_script: docker build -t nullchan-dev --target dev .

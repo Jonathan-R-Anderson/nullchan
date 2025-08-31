@@ -11,12 +11,12 @@ from werkzeug.datastructures import ImmutableDict
 import jinja_cache
 
 
-class ManiwaniApp(Flask):
+class NullchanApp(Flask):
     jinja_options = ImmutableDict(extensions=["jinja2.ext.autoescape", "jinja2.ext.with_"],
                                   bytecode_cache=jinja_cache.KeystoreCache())
 
     
-app = ManiwaniApp(__name__, static_url_path='')
+app = NullchanApp(__name__, static_url_path='')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -24,10 +24,9 @@ app.config["UPLOAD_FOLDER"] = "./uploads"
 app.config["THUMB_FOLDER"] = os.path.join(app.config["UPLOAD_FOLDER"], "thumbs")
 app.config["SERVE_STATIC"] = True
 app.config["SERVE_REST"] = True
-app.config["USE_RECAPTCHA"] = False
 app.config["FIREHOSE_LENGTH"] = 10
-if os.getenv("MANIWANI_CFG"):
-    app.config.from_envvar("MANIWANI_CFG")
+if os.getenv("NULLCHAN_CFG"):
+    app.config.from_envvar("NULLCHAN_CFG")
 app.url_map.strict_slashes = False
 app.json_encoder = CustomJSONEncoder
 db = SQLAlchemy(app)

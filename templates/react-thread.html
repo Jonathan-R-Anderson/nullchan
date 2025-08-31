@@ -7,10 +7,7 @@
 	{% endif %}
 {% endblock %}
 {% block head %}
-	{% if config["CAPTCHA_METHOD"] == "RECAPTCHA" %}
-		<script src='https://www.google.com/recaptcha/api.js?render={{ config["RECAPTCHA_SITE_KEY"] }}'></script>
-	{% endif %}
-	<style>
+        <style>
 	 .media-container {
 		 position: relative;
 		 text-align: center;
@@ -23,11 +20,11 @@
 		 font-size: 6em;
 	 }
 	</style>
-	<script>
-	 window._STORE = STORE_DATA;
-	 window._THREAD = THREAD_ID;
-	 window._LIVE_PROXY = '{{ static_resource("js/live-proxy.js") }}';
-	</script>
+        <script>
+         window._STORE = STORE_DATA;
+         window._THREAD = THREAD_ID;
+         window._LIVE_PROXY = '{{ static_resource("js/live-proxy.js") }}';
+        </script>
 {% endblock %}
 {% block navbar %}
 	<a id="newPostLink" href="{{ url_for("threads.new_post", thread_id=thread_id) }}" class="nav-item nav-link">New post</a>

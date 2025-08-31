@@ -8,7 +8,7 @@
 # xml/html5lib - packages needed by bleach
 # gevent - gevent is partially included thanks to the default probe but misses some things
 # ffmpeg - missed by the probe (a probe request could be crafted to grab it but would need video)
-# maniwani/* - folders either missed entirely by the default HTTP probe or only partially included
+# nullchan/* - folders either missed entirely by the default HTTP probe or only partially included
 docker-slim build --include-shell \
 			--include-path /usr/local/lib/python3.8/dist-packages/certifi/cacert.pem \
 			--include-path /usr/local/lib/python3.8/dist-packages/PIL \
@@ -17,9 +17,9 @@ docker-slim build --include-shell \
 			--include-path /usr/lib/python3.8/xml \
 			--include-path /usr/local/lib/python3.8/dist-packages/bleach/_vendor/html5lib \
 			--include-path /usr/local/lib/python3.8/dist-packages/gevent \
-			--include-path /maniwani/ffmpeg \
-			--include-path /maniwani/templates \
-			--include-path /maniwani/static \
-			--include-path /maniwani/migrations \
-			--include-path /maniwani/uploads \
+			--include-path /nullchan/ffmpeg \
+			--include-path /nullchan/templates \
+			--include-path /nullchan/static \
+			--include-path /nullchan/migrations \
+			--include-path /nullchan/uploads \
 			"$@"

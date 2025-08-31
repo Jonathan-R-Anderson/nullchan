@@ -6,9 +6,8 @@ from flask_restful import reqparse, inputs
 from model.Thread import Thread
 from model.Post import Post
 
-from cooldown import on_captcha_cooldown, refresh_captcha_cooldown
 from post import create_post
-from shared import app, db
+from shared import db
 
 def get_request_data() -> reqparse.Namespace:
     "Returns data about a new post request."
@@ -18,16 +17,6 @@ def get_request_data() -> reqparse.Namespace:
     parser.add_argument("body", type=str, required=True)
     parser.add_argument("useslip", type=inputs.boolean)
     parser.add_argument("spoiler", type=inputs.boolean)
-
-    if not on_captcha_cooldown():
-        captcha_method = app.config.get("CAPTCHA_METHOD")
-        if captcha_method == "RECAPTCHA":
-            parser.add_argument("recaptcha-token", type=str, required=True)
-        elif captcha_method == "CAPTCHOULI":
-            parser.add_argument("captchouli-id", type=str, required=True)
-            for i in range(9):
-                # For each image square
-                parser.add_argument(f"captchouli-{i}", type=str, default=False)
 
     return parser.parse_args()
 

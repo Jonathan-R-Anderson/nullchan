@@ -1,5 +1,5 @@
 {
-  "name": "maniwani",
+  "name": "nullchan",
   "version": "0.0.1",
   "description": "Imageboard software for the 21st century - frontend",
   "main": "index.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DangerOnTheRanger/maniwani.git"
+    "url": "git+https://github.com/DangerOnTheRanger/nullchan.git"
   },
   "keywords": [
     "imageboard"
@@ -21,9 +21,9 @@
   "author": "Kermit Alexander II",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DangerOnTheRanger/maniwani/issues"
+    "url": "https://github.com/DangerOnTheRanger/nullchan/issues"
   },
-  "homepage": "https://github.com/DangerOnTheRanger/maniwani#readme",
+  "homepage": "https://github.com/DangerOnTheRanger/nullchan#readme",
   "devDependencies": {
     "browser-sync": "^2.26.7",
     "del": "^5.1.0",

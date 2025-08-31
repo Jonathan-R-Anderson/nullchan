@@ -1,15 +1,15 @@
-Maniwani REST API v1
+Nullchan REST API v1
 ====================
 
 Basics
 ------
 
-As of the latest revision of Maniwani, sensitive REST endpoints (those that allow adding/deleting
+As of the latest revision of Nullchan, sensitive REST endpoints (those that allow adding/deleting
 site content) require HTTP Basic authentication, using slips as the credential; however,
 the majority of the endpoints can be freely accessed. Simply point `curl` or your custom client at
 the endpoint of your choice. If there's something on the website that you find you
 cannot accomplish with REST, submit an issue report (or better yet, a pull request) - one
-of the primary goals of Maniwani is 1:1 feature parity between the web and REST frontends.
+of the primary goals of Nullchan is 1:1 feature parity between the web and REST frontends.
 
 
 Reading the firehose
@@ -75,7 +75,7 @@ Getting the list of all boards (board index)
 **Method**: `GET`
 
 This endpoint contains the board index; the list of all boards currently registered
-on the site instance. On a stock Maniwani installation, the response will be something
+on the site instance. On a stock Nullchan installation, the response will be something
 like the following:
 
 ```

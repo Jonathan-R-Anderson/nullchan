@@ -1,7 +1,7 @@
-Moderating a Maniwani instance
+Moderating a Nullchan instance
 ------------------------------
 
-Moderating an instance of Maniwani requires you to be logged into a slip
+Moderating an instance of Nullchan requires you to be logged into a slip
 with either administration or moderator privileges, otherwise, the
 moderation UI will not display.
 
